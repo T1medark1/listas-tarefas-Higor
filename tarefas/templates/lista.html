@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tarefas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tarefas/estilo.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+
+        <a class="botao" href="{% url 'criar_tarefa' %}">Nova tarefa</a>
+
+        <div class="filtros">
+            <a href="?status=todas">Todas</a>
+            <a href="?status=pendentes">Pendentes</a>
+            <a href="?status=concluidas">Concluídas</a>
+        </div>
+
+        {% for tarefa in tarefas %}
+            <div class="tarefa">
+                <h3>{{ tarefa.titulo }}</h3>
+                <p>Prioridade: {{ tarefa.get_prioridade_display }}</p>
+
+
+                {% if tarefa.concluida %}
+                
+                    <p>Status: Concluída</p>
+                {% else %}
+                    <p>Status: Pendente</p>
+                {% endif %}
+
+
+                <a href="{% url 'detalhe_tarefa' tarefa.pk %}">Detalhes</a>
+                <a href="{% url 'editar_tarefa' tarefa.pk %}">Editar</a>
+                <a href="{% url 'excluir_tarefa' tarefa.pk %}">Excluir</a>
+            </div>
+        {% empty %}
+            <p>Nenhuma tarefa encontrada.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
